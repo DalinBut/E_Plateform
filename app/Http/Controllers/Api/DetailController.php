@@ -16,6 +16,8 @@ class DetailController extends ApiController
      */
     public function index()
     {
+        $this -> authorize('view', Detail::class);
+
         $detail = Detail::all();
         return $this->okWithData($detail);
     }

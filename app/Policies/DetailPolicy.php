@@ -18,7 +18,7 @@ class DetailPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        // return true;
         // return $user->id === $detail->user_id;
     }
 
@@ -31,8 +31,19 @@ class DetailPolicy
      */
     public function view(User $user, Detail $detail)
     {
-        return $user->id === $detail->user_id;
+        // return $user->id === $detail->user_id;
         // return $user->id === $detail->user->id;
+        // $access = false;
+        if ($user->can('view-unpublished-post')){
+            return true;
+        }
+        if ($user->can('view-post')){
+            return true;
+        }
+        if ($user === null){
+            return false;
+        }
+        // return $user->id == $detail->user_id;
     }
 
     /**

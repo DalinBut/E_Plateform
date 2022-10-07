@@ -19,10 +19,13 @@ class RoleSeeder extends Seeder
         // $role = Role::create(['name' => 'user']);
 
         // $permission = Permission::create(['name' => 'create-user']);
+        Permission::create(['name' => 'view-user']);
         Permission::create(['name' => 'create-user']);
         Permission::create(['name' => 'edit-user']);
         Permission::create(['name' => 'delete-user']);
 
+        Permission::create(['name' => 'view-post']);
+        Permission::create(['name' => 'view-unpublished-post']);
         Permission::create(['name' => 'create-post']);
         Permission::create(['name' => 'edit-post']);
         Permission::create(['name' => 'delete-post']);
@@ -31,15 +34,19 @@ class RoleSeeder extends Seeder
         $userRole = Role::create(['name' => 'User']);
 
         $adminRole->givePermissionTo([
+            'view-user',
             'create-user',
             'edit-user',
             'delete-user',
+            'view-post',
+            'view-unpublished-post',
             'create-post',
             'edit-post',
             'delete-post',
         ]);
 
         $userRole->givePermissionTo([
+            'view-post',
             'create-post',
             'edit-post',
             'delete-post',
