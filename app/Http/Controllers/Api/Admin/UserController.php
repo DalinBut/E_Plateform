@@ -19,8 +19,9 @@ class UserController extends ApiController
 
         public function index()
         {
-                $user = DB::table('users')->select('name', 'email')->get();
-                return $this->okWithData($user);
+            $this->authorize('viewAny', User::class);
+            $user = DB::table('users')->select('name', 'email')->get();
+            return $this->okWithData($user);
         }
 
        
@@ -32,23 +33,27 @@ class UserController extends ApiController
         
         public function store(Request $request)
         {
-                $request->validate([
-                    'name' => 'required',
-                    'email' => 'required|email|unique|users',
-                    'password' => 'required|min:6',
-                ]);
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password)
-                ]);
-                return $this->created($user);
+            $this->authorize('create', User::class);
+             $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+            ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+            return $this->created($user);
         }
 
         
-        public function show($id)
+        public function show(User $user)
         {
-            //
+            // $this->authorize('view', $user);
+            // $user->find($user);
+            // $user = DB::table('users')->select('name', 'email')->get();
+            // return $this->okWithData($user);
         }
 
         
@@ -60,24 +65,25 @@ class UserController extends ApiController
         
         public function update(Request $request, User $user)
         {
-                $request->validate([
-                    'name' => 'required',
-                    'email' => 'required|email',
-                    'password' => 'required|min:6',
-                ]);
-                $user->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password)
-                ]);
-                $token = $user->createToken('apiToken')->plainTextToken;
-                return $this->updated($user);
+            $this->authorize('update', $user);
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]);
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+            $token = $user->createToken('apiToken')->plainTextToken;
+            return $this->updated($user);
         }
 
         public function destroy(User $user)
         {
-            
-                $user->delete();
-                return $this->deleted();
+            $this->authorize('delete', $user);
+            $user->delete();
+            return $this->deleted();
         }
 }

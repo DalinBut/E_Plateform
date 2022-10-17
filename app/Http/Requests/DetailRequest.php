@@ -31,6 +31,7 @@ class DetailRequest extends FormRequest
             'companyName' => 'required',
             'position' => 'required',
             'address' => 'required',
+            'image' => '|image|mimes:jpeg,png,jpg,svg|max:2048'
         ];
     }
 }

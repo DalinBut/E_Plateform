@@ -18,7 +18,17 @@ class DetailPolicy
      */
     public function viewAny(User $user)
     {
-        // return true;
+        // $detail = Detail::all();
+        // if ($user->can('view-unpublished-post')){
+        //     return true;
+        // }
+        // if ($user->can('view-post')){
+        //     return true;
+        // }
+        // if ($user === null){
+        //     return false;
+        // }
+        return true;
         // return $user->id === $detail->user_id;
     }
 
@@ -33,16 +43,23 @@ class DetailPolicy
     {
         // return $user->id === $detail->user_id;
         // return $user->id === $detail->user->id;
-        // $access = false;
+
         if ($user->can('view-unpublished-post')){
             return true;
         }
         if ($user->can('view-post')){
             return true;
         }
-        if ($user === null){
+        // if ($user === null){
+        //     return false;
+        // }
+        else {
             return false;
         }
+
+        // if ($user->hasRole('admin')){
+        //     return true;
+        // }
         // return $user->id == $detail->user_id;
     }
 
@@ -54,7 +71,10 @@ class DetailPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->can('create-post')){
+            // return $detail->user_id === $user->id;
+            return true;
+        }
     }
 
     /**
@@ -66,7 +86,13 @@ class DetailPolicy
      */
     public function update(User $user, Detail $detail)
     {
-        return $user->id === $detail->user_id;
+        if ($user->can('edit-own-post')){
+            return $detail->user_id === $user->id;
+        }
+        if ($user->can('edit-post')){
+            return true;
+        }
+        
     }
 
     /**
@@ -78,7 +104,13 @@ class DetailPolicy
      */
     public function delete(User $user, Detail $detail)
     {
-        return $user->id === $detail->user_id;
+        if ($user->can('delete-own-post')){
+            return $detail->user_id === $user->id;
+        }
+        if ($user->can('delete-post')){
+            return true;
+        }
+        
     }
 
     /**

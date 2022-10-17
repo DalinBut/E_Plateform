@@ -29,6 +29,8 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'create-post']);
         Permission::create(['name' => 'edit-post']);
         Permission::create(['name' => 'delete-post']);
+        Permission::create(['name' => 'edit-own-post']);
+        Permission::create(['name' => 'delete-own-post']);
 
         $adminRole = Role::create(['name' => 'Admin']);
         $userRole = Role::create(['name' => 'User']);
@@ -39,17 +41,17 @@ class RoleSeeder extends Seeder
             'edit-user',
             'delete-user',
             'view-post',
-            'view-unpublished-post',
             'create-post',
             'edit-post',
             'delete-post',
         ]);
-
+        
         $userRole->givePermissionTo([
+            'view-unpublished-post',
             'view-post',
             'create-post',
-            'edit-post',
-            'delete-post',
+            'edit-own-post',
+            'delete-own-post',
         ]);
     }
 }

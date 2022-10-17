@@ -23,6 +23,7 @@ class CreateDetailsTable extends Migration
             $table->string('companyName');
             $table->string('position');
             $table->string('address');
+            $table->string('image');
             $table->timestamps();
         });
     }

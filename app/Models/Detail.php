@@ -16,5 +16,10 @@ class Detail extends Model
         'companyName',
         'position',
         'address',
+        'image'
     ];
+
+    public function user(){
+        $this -> belongsTo(User::class);
+    }
 }

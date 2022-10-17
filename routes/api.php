@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DetailController;
 use Illuminate\Http\Request;
@@ -21,10 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    // Route::get('/dashboard', [DashboardController::class, 'dashboard']);
-    // Route::get('/dash', [DashboardController::class, 'index']);
-    // Route::resource('/users', UserController::class);
     Route::resource('/detail', DetailController::class);
+    // Route::post('/details', [DetailController::class, 'store']);
+    Route::resource('/user_manage', UserController::class);
 });
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

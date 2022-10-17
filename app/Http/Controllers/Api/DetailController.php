@@ -16,8 +16,7 @@ class DetailController extends ApiController
      */
     public function index()
     {
-        $this -> authorize('view', Detail::class);
-
+        $this -> authorize('viewAny', Detail::class);
         $detail = Detail::all();
         return $this->okWithData($detail);
     }
@@ -29,7 +28,8 @@ class DetailController extends ApiController
      */
     public function create()
     {
-        //
+        // $this->authorize('create', Detail::class);
+        // return 'Hello';
     }
 
     /**
@@ -40,13 +40,21 @@ class DetailController extends ApiController
      */
     public function store(DetailRequest $request)
     {
+        $this->authorize('create', Detail::class);
         $validateData = $request->validated();
         // $detail = Detail::create($request->all());
-
-        $detail = auth()->user()->detail()->create($request->all());
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/';
+            $image_name = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $image_name);
+            $validateData['image'] = "$image_name";
+        }
+        $detail = auth()->user()->details()->create($request->all());
+        // $detail = auth()->user()->details->create($validateData);
         return $this->created([
             'detail' => $detail,
         ], 'Detail has been created successfully');
+        // return $detail; 
     }
 
     /**
@@ -57,7 +65,8 @@ class DetailController extends ApiController
      */
     public function show(Detail $detail)
     {
-        $details = auth()->user()->detail()->find($detail);
+        $this->authorize('view', Detail::class);
+        $details = auth()->user()->details->find($detail);
         return $details;
     }
 
@@ -81,7 +90,15 @@ class DetailController extends ApiController
      */
     public function update(DetailRequest $request, Detail $detail)
     {
+        // $this -> authorize('update', Detail::class);
+        $this -> authorize('update', $detail);
         $validateData = $request->validated();
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/';
+            $image_name = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $image_name);
+            $validateData['image'] = "$image_name";
+        }
         $detail->update($validateData);
         return $this->updated($detail);
     }
@@ -94,6 +111,7 @@ class DetailController extends ApiController
      */
     public function destroy(Detail $detail)
     {
+        $this->authorize('delete', $detail);
         $detail->delete();
         return $this->deleted($detail);
     }
