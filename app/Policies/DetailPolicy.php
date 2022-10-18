@@ -39,7 +39,7 @@ class DetailPolicy
      * @param  \App\Models\Detail  $detail
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Detail $detail)
+    public function view(User $user)
     {
         // return $user->id === $detail->user_id;
         // return $user->id === $detail->user->id;
@@ -50,16 +50,14 @@ class DetailPolicy
         if ($user->can('view-post')){
             return true;
         }
+
         // if ($user === null){
         //     return false;
         // }
-        else {
-            return false;
-        }
-
-        // if ($user->hasRole('admin')){
-        //     return true;
+        // else {
+        //     return false;
         // }
+
         // return $user->id == $detail->user_id;
     }
 

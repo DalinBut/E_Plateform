@@ -50,10 +50,10 @@ class UserController extends ApiController
         
         public function show(User $user)
         {
-            // $this->authorize('view', $user);
-            // $user->find($user);
+            $this->authorize('view', $user);
+            $user->find($user);
             // $user = DB::table('users')->select('name', 'email')->get();
-            // return $this->okWithData($user);
+            return $this->okWithData($user);
         }
 
         

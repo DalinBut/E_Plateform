@@ -31,7 +31,9 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        if($user->can('view-user')){
+            return true;
+        }
     }
 
     /**

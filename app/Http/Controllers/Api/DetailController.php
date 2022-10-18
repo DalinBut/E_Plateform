@@ -66,8 +66,9 @@ class DetailController extends ApiController
     public function show(Detail $detail)
     {
         $this->authorize('view', Detail::class);
-        $details = auth()->user()->details->find($detail);
-        return $details;
+        // $details = auth()->user()->details()->find($detail);
+        $detail->find($detail);
+        return $detail;
     }
 
     /**
