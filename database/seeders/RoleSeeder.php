@@ -15,10 +15,6 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        // $role = Role::create(['name' => 'admin']);
-        // $role = Role::create(['name' => 'user']);
-
-        // $permission = Permission::create(['name' => 'create-user']);
         Permission::create(['name' => 'view-user']);
         Permission::create(['name' => 'create-user']);
         Permission::create(['name' => 'edit-user']);
@@ -45,7 +41,6 @@ class RoleSeeder extends Seeder
             'edit-post',
             'delete-post',
         ]);
-        
         $userRole->givePermissionTo([
             'view-unpublished-post',
             'view-post',
